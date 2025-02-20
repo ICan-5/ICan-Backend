@@ -28,8 +28,8 @@ public class RedisConfig {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(host, port);
 
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .useSsl()
-                .disablePeerVerification()
+                .useSsl() //로컬 테스트 시 제외
+                .disablePeerVerification() //로컬 테스트 시 제외
                 .build();
 
         return new LettuceConnectionFactory(redisConfig, clientConfig);

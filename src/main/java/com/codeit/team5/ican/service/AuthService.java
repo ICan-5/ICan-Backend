@@ -1,6 +1,6 @@
 package com.codeit.team5.ican.service;
 
-import com.codeit.team5.ican.controller.dto.LoginResponse;
+import com.codeit.team5.ican.controller.dto.user.UserLoginResponse;
 import com.codeit.team5.ican.domain.User;
 import com.codeit.team5.ican.exception.InvalidTokenException;
 import com.codeit.team5.ican.repository.UserRepository;
@@ -17,7 +17,7 @@ public class AuthService {
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
 
-    public void login(LoginResponse loginResponse) {
+    public void login(UserLoginResponse loginResponse) {
         User findUser = userRepository.findByCodeitId(loginResponse.getUser().getId());
         if(findUser == null) {
             throw new RuntimeException("백엔드 API로 회원가입을 해야합니다.");
