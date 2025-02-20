@@ -1,9 +1,9 @@
-package com.codeit.team5.ican.controller.dto;
+package com.codeit.team5.ican.controller.dto.user;
 
 import lombok.Getter;
 
 @Getter
-public class LoginRequest {
+public class UserLoginRequest {
     private String email;
     private String password;
 }

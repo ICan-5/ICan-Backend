@@ -4,12 +4,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleException(RuntimeException e) {
-        return ResponseEntity.ok(e.getMessage());
+    public ResponseEntity<Map<String, String>> handleException(RuntimeException e) {
+        return ResponseEntity.ok(
+                Map.of(
+                        "message", e.getMessage()
+                )
+        );
     }
 
 }

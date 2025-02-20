@@ -1,9 +1,9 @@
 package com.codeit.team5.ican.controller;
 
-import com.codeit.team5.ican.controller.dto.RegisterRequest;
-import com.codeit.team5.ican.controller.dto.RegisterResponse;
-import com.codeit.team5.ican.controller.dto.UpdateRequest;
-import com.codeit.team5.ican.domain.User;
+import com.codeit.team5.ican.controller.dto.user.UserRegisterRequest;
+import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
+import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
+import com.codeit.team5.ican.controller.dto.user.UserDTO;
 import com.codeit.team5.ican.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +27,14 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
-            @RequestBody RegisterRequest request
+            @RequestBody UserRegisterRequest request
     ) {
         try {
-            RegisterResponse response = restClient.post()
+            UserRegisterResponse response = restClient.post()
                     .uri("/user")
                     .body(request)
                     .retrieve()
-                    .body(RegisterResponse.class);
+                    .body(UserRegisterResponse.class);
 
             userService.register(response);
 
@@ -48,19 +48,19 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<User> getUser(HttpServletRequest request) {
+    public ResponseEntity<UserDTO> getUser(HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
-        return ResponseEntity.ok(userService.findByUserId(userId));
+        return ResponseEntity.ok(UserDTO.from(userService.findByUserId(userId)));
     }
 
     @PostMapping
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<UserDTO> updateUser(
             HttpServletRequest request,
             @RequestPart(required = false) MultipartFile image,
-            @RequestPart(required = false, name = "user") UpdateRequest updateRequest
+            @RequestPart(required = false, name = "user") UserUpdateRequest updateRequest
     ) {
         Long userId = (Long) request.getAttribute("userId");
-        return ResponseEntity.ok(userService.updateUser(userId, image, updateRequest));
+        return ResponseEntity.ok(UserDTO.from(userService.updateUser(userId, image, updateRequest)));
     }
 
 }

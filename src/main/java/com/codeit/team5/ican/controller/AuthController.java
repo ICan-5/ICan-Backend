@@ -1,7 +1,7 @@
 package com.codeit.team5.ican.controller;
 
-import com.codeit.team5.ican.controller.dto.LoginRequest;
-import com.codeit.team5.ican.controller.dto.LoginResponse;
+import com.codeit.team5.ican.controller.dto.user.UserLoginRequest;
+import com.codeit.team5.ican.controller.dto.user.UserLoginResponse;
 import com.codeit.team5.ican.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +26,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody LoginRequest request
+            @RequestBody UserLoginRequest request
     ) {
         try {
-            LoginResponse response = restClient.post()
+            UserLoginResponse response = restClient.post()
                     .uri("/auth/login")
                     .body(request)
                     .retrieve()
-                    .body(LoginResponse.class);
+                    .body(UserLoginResponse.class);
 
             authService.login(response);
 

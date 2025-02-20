@@ -1,14 +1,14 @@
 package com.codeit.team5.ican.domain;
 
-import com.codeit.team5.ican.controller.dto.RegisterResponse;
-import com.codeit.team5.ican.controller.dto.UpdateRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
+import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -30,6 +30,9 @@ public class User {
 
     private String profile;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private final List<Goal> goals = new ArrayList<>();
+
     private User(Long codeitId, String email, String name, ZonedDateTime createdAt, ZonedDateTime updatedAt) {
         this.codeitId = codeitId;
         this.email = email;
@@ -38,7 +41,7 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public static User of(RegisterResponse response) {
+    public static User of(UserRegisterResponse response) {
         return new User(
                 response.getId(),
                 response.getEmail(),
@@ -48,7 +51,7 @@ public class User {
         );
     }
 
-    public void update(UpdateRequest request) {
+    public void update(UserUpdateRequest request) {
         this.name = request.getName();
     }
 
