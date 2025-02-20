@@ -4,10 +4,12 @@ import com.codeit.team5.ican.controller.dto.goal.GoalCreateRequest;
 import com.codeit.team5.ican.controller.dto.goal.UpdateGoalRequest;
 import com.codeit.team5.ican.domain.Goal;
 import com.codeit.team5.ican.domain.User;
+import com.codeit.team5.ican.exception.GoalAlreadyExistsException;
 import com.codeit.team5.ican.exception.GoalNotFoundException;
 import com.codeit.team5.ican.repository.GoalRepository;
 import com.codeit.team5.ican.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +36,13 @@ public class GoalService {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new RuntimeException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
         );
-        return goalRepository.save(Goal.create(user, request));
+
+        try {
+            return goalRepository.save(Goal.create(user, request));
+        } catch (DataIntegrityViolationException e) {
+            throw new GoalAlreadyExistsException("골 아이디 " + request.getGoalId() + "가 이미 존재합니다");
+        }
+
     }
 
     @Transactional(readOnly = true)
