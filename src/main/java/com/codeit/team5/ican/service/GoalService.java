@@ -38,7 +38,9 @@ public class GoalService {
         );
 
         try {
-            return goalRepository.save(Goal.create(user, request));
+            Goal saved = goalRepository.save(Goal.create(user, request));
+            goalRepository.flush(); //for checking DataIntegrityViolationException
+            return saved;
         } catch (DataIntegrityViolationException e) {
             throw new GoalAlreadyExistsException("골 아이디 " + request.getGoalId() + "가 이미 존재합니다");
         }
