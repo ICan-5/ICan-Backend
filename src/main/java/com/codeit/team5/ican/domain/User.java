@@ -33,6 +33,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private final List<Goal> goals = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private final List<Todo> todos = new ArrayList<>();
+
     private User(Long codeitId, String email, String name, ZonedDateTime createdAt, ZonedDateTime updatedAt) {
         this.codeitId = codeitId;
         this.email = email;

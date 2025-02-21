@@ -1,7 +1,7 @@
 package com.codeit.team5.ican.domain;
 
 import com.codeit.team5.ican.controller.dto.goal.GoalCreateRequest;
-import com.codeit.team5.ican.controller.dto.goal.UpdateGoalRequest;
+import com.codeit.team5.ican.controller.dto.goal.GoalUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +41,7 @@ public class Goal {
                 .build();
     }
 
-    public void update(UpdateGoalRequest request) {
+    public void update(GoalUpdateRequest request) {
         this.color = request.getColor();
     }
 

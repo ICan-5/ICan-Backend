@@ -2,7 +2,7 @@ package com.codeit.team5.ican.controller;
 
 import com.codeit.team5.ican.controller.dto.goal.GoalCreateRequest;
 import com.codeit.team5.ican.controller.dto.goal.GoalDTO;
-import com.codeit.team5.ican.controller.dto.goal.UpdateGoalRequest;
+import com.codeit.team5.ican.controller.dto.goal.GoalUpdateRequest;
 import com.codeit.team5.ican.service.GoalService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -54,11 +54,11 @@ public class GoalController {
         );
     }
 
-    @PostMapping("{goalId}")
+    @PatchMapping("{goalId}")
     public ResponseEntity<GoalDTO> updateGoal(
             HttpServletRequest request,
             @PathVariable Long goalId,
-            @RequestBody UpdateGoalRequest updateGoalRequest
+            @RequestBody GoalUpdateRequest updateGoalRequest
     ) {
         Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.ok(

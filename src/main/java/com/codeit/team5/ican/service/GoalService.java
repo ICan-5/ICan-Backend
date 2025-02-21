@@ -1,7 +1,7 @@
 package com.codeit.team5.ican.service;
 
 import com.codeit.team5.ican.controller.dto.goal.GoalCreateRequest;
-import com.codeit.team5.ican.controller.dto.goal.UpdateGoalRequest;
+import com.codeit.team5.ican.controller.dto.goal.GoalUpdateRequest;
 import com.codeit.team5.ican.domain.Goal;
 import com.codeit.team5.ican.domain.User;
 import com.codeit.team5.ican.exception.GoalAlreadyExistsException;
@@ -49,7 +49,7 @@ public class GoalService {
 
     @Transactional(readOnly = true)
     public Goal findGoal(Long userId, Long goalId) {
-        Goal goal = goalRepository.findByGoalId(goalId);
+        Goal goal = goalRepository.findByGoalId(goalId).orElse(null);
 
         if(goal == null || !userId.equals(goal.getUser().getId())) {
             throw new GoalNotFoundException("골 아이디 " + goalId + "를 찾을 수 없습니다.");
@@ -59,7 +59,7 @@ public class GoalService {
     }
 
     @Transactional
-    public Goal updateGoal(Long userId, Long goalId, UpdateGoalRequest request) {
+    public Goal updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
         Goal goal = findGoal(userId, goalId);
         goal.update(request);
         return goalRepository.save(goal);
@@ -67,8 +67,7 @@ public class GoalService {
 
     @Transactional
     public void deleteGoal(Long userId, Long goalId) {
-        Goal goal = findGoal(userId, goalId);
-        goalRepository.deleteByGoalId(goal.getGoalId());
+        goalRepository.delete(findGoal(userId, goalId));
     }
 
 }
