@@ -6,6 +6,7 @@ import com.codeit.team5.ican.domain.Goal;
 import com.codeit.team5.ican.domain.User;
 import com.codeit.team5.ican.exception.GoalAlreadyExistsException;
 import com.codeit.team5.ican.exception.GoalNotFoundException;
+import com.codeit.team5.ican.exception.UserNotFoundException;
 import com.codeit.team5.ican.repository.GoalRepository;
 import com.codeit.team5.ican.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class GoalService {
     @Transactional(readOnly = true)
     public List<Goal> findAllGoals(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
-                new RuntimeException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
+                new UserNotFoundException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
         );
 
         return user.getGoals();
@@ -34,7 +35,7 @@ public class GoalService {
     @Transactional
     public Goal createGoal(Long userId, GoalCreateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() ->
-                new RuntimeException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
+                new UserNotFoundException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
         );
 
         try {
@@ -49,13 +50,9 @@ public class GoalService {
 
     @Transactional(readOnly = true)
     public Goal findGoal(Long userId, Long goalId) {
-        Goal goal = goalRepository.findByGoalId(goalId).orElse(null);
-
-        if(goal == null || !userId.equals(goal.getUser().getId())) {
-            throw new GoalNotFoundException("골 아이디 " + goalId + "를 찾을 수 없습니다.");
-        }
-
-        return goal;
+        return goalRepository.findByUserIdAndGoalId(userId, goalId).orElseThrow(() ->
+                new GoalNotFoundException("골 아이디 " + goalId + "를 찾을 수 없습니다.")
+        );
     }
 
     @Transactional

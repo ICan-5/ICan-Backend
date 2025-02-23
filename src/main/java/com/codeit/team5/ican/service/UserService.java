@@ -3,6 +3,7 @@ package com.codeit.team5.ican.service;
 import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
 import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
 import com.codeit.team5.ican.domain.User;
+import com.codeit.team5.ican.exception.UserNotFoundException;
 import com.codeit.team5.ican.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findByUserId(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException("유저 아이디 " + id + "를 찾을 수 없습니다.")
+        );
     }
 
     @Transactional
     public User updateUser(Long id, MultipartFile image, UserUpdateRequest request) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("유저 아이디 " + id + "를 찾을 수 없습니다.")
-        );
+        User user = findByUserId(id);
 
         if(isExists(image)) {
             if(isExists(user.getProfile())) {

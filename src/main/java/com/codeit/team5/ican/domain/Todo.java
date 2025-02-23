@@ -66,4 +66,8 @@ public class Todo {
         update(request);
         this.goal = goal;
     }
+
+    public void deleteNote() {
+        this.noteId = null;
+    }
 }

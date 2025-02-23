@@ -8,6 +8,7 @@ import com.codeit.team5.ican.domain.User;
 import com.codeit.team5.ican.exception.GoalNotFoundException;
 import com.codeit.team5.ican.exception.TodoAlreadyExistsException;
 import com.codeit.team5.ican.exception.TodoNotFoundException;
+import com.codeit.team5.ican.exception.UserNotFoundException;
 import com.codeit.team5.ican.repository.GoalRepository;
 import com.codeit.team5.ican.repository.TodoRepository;
 import com.codeit.team5.ican.repository.UserRepository;
@@ -27,13 +28,12 @@ public class TodoService {
     @Transactional
     public Todo createTodo(Long userId, TodoCreateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() ->
-                new RuntimeException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
+                new UserNotFoundException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
         );
 
-        Goal goal = goalRepository.findByGoalId(request.getGoalId()).orElse(null);
-        if(goal == null || !userId.equals(goal.getUser().getId())) {
-            throw new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.");
-        }
+        Goal goal = goalRepository.findByUserIdAndGoalId(userId, request.getGoalId()).orElseThrow(() ->
+            new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.")
+        );
 
         try {
             Todo saved = todoRepository.save(Todo.create(user, goal, request));
@@ -54,11 +54,9 @@ public class TodoService {
             return todoRepository.save(todo);
         }
 
-        Goal goal = goalRepository.findByGoalId(request.getGoalId()).orElse(null);
-        if(goal == null || !userId.equals(goal.getUser().getId())) {
-            throw new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.");
-        }
-
+        Goal goal = goalRepository.findByUserIdAndGoalId(userId, request.getGoalId()).orElseThrow(() ->
+                new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.")
+        );
         todo.update(goal, request);
         return todoRepository.save(todo);
     }
@@ -70,13 +68,9 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public Todo findTodo(Long userId, Long todoId) {
-        Todo todo = todoRepository.findByTodoId(todoId).orElse(null);
-
-        if(todo == null || !userId.equals(todo.getUser().getId())) {
-            throw new TodoNotFoundException("할 일 아이디 " + todoId + "를 찾을 수 없습니다.");
-        }
-
-        return todo;
+        return todoRepository.findByUserIdAndTodoId(userId, todoId).orElseThrow(() ->
+                new TodoNotFoundException("할 일 아이디 " + todoId + "를 찾을 수 없습니다.")
+        );
     }
 
 
