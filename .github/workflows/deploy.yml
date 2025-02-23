@@ -3,8 +3,7 @@ name: Deploy To EC2
 on:
   push:
     branches:
-      - main
-      - feat/Dashboard
+      - feat/calendar
 
 jobs:
   deploy:
