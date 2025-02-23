@@ -1,10 +1,10 @@
 package com.codeit.team5.ican.controller;
 
+import com.codeit.team5.ican.config.annotation.LoginUser;
 import com.codeit.team5.ican.controller.dto.todo.TodoCreateRequest;
 import com.codeit.team5.ican.controller.dto.todo.TodoDTO;
 import com.codeit.team5.ican.controller.dto.todo.TodoUpdateRequest;
 import com.codeit.team5.ican.service.TodoService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,9 @@ public class TodoController {
 
     @PostMapping
     public ResponseEntity<TodoDTO> createTodo(
-            HttpServletRequest request,
+            @LoginUser Long userId,
             @RequestBody TodoCreateRequest todoCreateRequest
     ) {
-        Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 TodoDTO.from(todoService.createTodo(userId, todoCreateRequest))
         );
@@ -30,11 +29,10 @@ public class TodoController {
 
     @PatchMapping("/{todoId}")
     public ResponseEntity<TodoDTO> updateTodo(
-            HttpServletRequest request,
+            @LoginUser Long userId,
             @PathVariable Long todoId,
             @RequestBody TodoUpdateRequest todoUpdateRequest
     ) {
-        Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.ok().body(
                 TodoDTO.from(todoService.updateTodo(userId, todoId, todoUpdateRequest))
         );
@@ -42,10 +40,9 @@ public class TodoController {
 
     @DeleteMapping("/{todoId}")
     public ResponseEntity<Void> deleteTodo(
-            HttpServletRequest request,
+            @LoginUser Long userId,
             @PathVariable Long todoId
     ) {
-        Long userId = (Long) request.getAttribute("userId");
         todoService.deleteTodo(userId, todoId);
         return ResponseEntity.noContent().build();
     }
