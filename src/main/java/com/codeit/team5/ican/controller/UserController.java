@@ -1,11 +1,11 @@
 package com.codeit.team5.ican.controller;
 
+import com.codeit.team5.ican.config.annotation.LoginUser;
 import com.codeit.team5.ican.controller.dto.user.UserRegisterRequest;
 import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
 import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
 import com.codeit.team5.ican.controller.dto.user.UserDTO;
 import com.codeit.team5.ican.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -48,18 +48,16 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDTO> getUser(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+    public ResponseEntity<UserDTO> getUser(@LoginUser Long userId) {
         return ResponseEntity.ok(UserDTO.from(userService.findByUserId(userId)));
     }
 
     @PostMapping
     public ResponseEntity<UserDTO> updateUser(
-            HttpServletRequest request,
+            @LoginUser Long userId,
             @RequestPart(required = false) MultipartFile image,
             @RequestPart(required = false, name = "user") UserUpdateRequest updateRequest
     ) {
-        Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.ok(UserDTO.from(userService.updateUser(userId, image, updateRequest)));
     }
 
