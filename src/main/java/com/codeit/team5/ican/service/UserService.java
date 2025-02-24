@@ -50,7 +50,8 @@ public class UserService {
         }
 
         user.setUpdatedAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
-        return userRepository.save(user);
+
+        return user;
     }
 
     private boolean isExists(MultipartFile image) {
