@@ -28,13 +28,12 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom {
         return jpaQueryFactory
                 .select(Projections.constructor(Jandi.class,
                         todo.date,
-                        todo.id.count()
+                        todo.done.when(true).then(1).otherwise(0).sum().multiply(100.0).divide(todo.id.count())
                 ))
                 .from(todo)
                 .where(
                         todo.user.id.eq(userId),
-                        todo.date.year().eq(year),
-                        todo.done.isTrue()
+                        todo.date.year().eq(year)
                 )
                 .groupBy(todo.date)
                 .orderBy(todo.date.asc())
