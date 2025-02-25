@@ -5,4 +5,5 @@ import lombok.Getter;
 @Getter
 public class GoalCreateRequest {
     private Long goalId;
+    private String title;
 }

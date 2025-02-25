@@ -28,21 +28,25 @@ public class Goal {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    private String title;
+
     private String color;
 
     private ZonedDateTime createdAt;
 
     public static Goal create(User user, GoalCreateRequest request) {
         return Goal.builder()
-                .user(user)
                 .goalId(request.getGoalId())
+                .user(user)
+                .title(request.getTitle())
                 .color("default")
                 .createdAt(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
     }
 
     public void update(GoalUpdateRequest request) {
-        this.color = request.getColor();
+        this.color = request.getColor() != null ? request.getColor() : color;
+        this.title = request.getTitle() != null ? request.getTitle() : title;
     }
 
 }

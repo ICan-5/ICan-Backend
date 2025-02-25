@@ -59,7 +59,7 @@ public class GoalService {
     public Goal updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
         Goal goal = findGoal(userId, goalId);
         goal.update(request);
-        return goalRepository.save(goal);
+        return goal;
     }
 
     @Transactional

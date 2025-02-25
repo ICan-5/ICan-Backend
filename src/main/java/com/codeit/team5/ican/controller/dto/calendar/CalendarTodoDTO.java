@@ -13,8 +13,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class
-CalendarTodoDTO {
+public class CalendarTodoDTO {
     private Long todoId;
     private Long noteId;
     private LocalDate date;
