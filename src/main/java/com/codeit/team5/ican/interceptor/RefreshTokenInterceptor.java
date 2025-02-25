@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
+public class RefreshTokenInterceptor implements HandlerInterceptor {
 
     private final AuthService authService;
     private final ObjectMapper objectMapper;
@@ -25,23 +25,18 @@ public class AuthInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            sendCustomError(response, HttpServletResponse.SC_UNAUTHORIZED, "Authorization 헤더에 토큰을 포함해야합니다.");
+            sendCustomError(response, HttpServletResponse.SC_UNAUTHORIZED, "Authorization 헤더에 Refresh Token을 포함해야합니다.");
             return false;
         }
 
-        try {
-            String accessToken = authorizationHeader.substring(7);
-            Long userId = authService.getUserId(accessToken);
-
-            request.setAttribute("userId", userId);
-            return true;
-        } catch (InvalidTokenException e) {
-            sendCustomError(response, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-            return false;
-        } catch (Exception e) {
-            sendCustomError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "서버 오류 발생");
+        String token = authorizationHeader.substring(7);
+        if(authService.isAccessToken(token)) {
+            sendCustomError(response, HttpServletResponse.SC_UNAUTHORIZED, "Access Token이 아닌 Refresh Token을 사용해야 합니다.");
             return false;
         }
+
+        request.setAttribute("refreshToken", token);
+        return true;
     }
 
     private void sendCustomError(HttpServletResponse response, int status, String message) throws IOException {

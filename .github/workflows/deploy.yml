@@ -3,7 +3,7 @@ name: Deploy To EC2
 on:
   push:
     branches:
-      - update/goal
+      - feat/refresh-token
 
 jobs:
   deploy:
