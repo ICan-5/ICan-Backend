@@ -25,13 +25,13 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            sendCustomError(response, HttpServletResponse.SC_UNAUTHORIZED, "Authorization 헤더에 Refresh Token을 포함해야합니다.");
+            sendCustomError(response, HttpServletResponse.SC_BAD_REQUEST, "Authorization 헤더에 Refresh Token을 포함해야합니다.");
             return false;
         }
 
         String token = authorizationHeader.substring(7);
         if(authService.isAccessToken(token)) {
-            sendCustomError(response, HttpServletResponse.SC_UNAUTHORIZED, "Access Token이 아닌 Refresh Token을 사용해야 합니다.");
+            sendCustomError(response, HttpServletResponse.SC_BAD_REQUEST, "Access Token이 아닌 Refresh Token을 사용해야 합니다.");
             return false;
         }
 
