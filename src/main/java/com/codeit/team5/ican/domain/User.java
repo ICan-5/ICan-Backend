@@ -1,6 +1,6 @@
 package com.codeit.team5.ican.domain;
 
-import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
+import com.codeit.team5.ican.controller.dto.auth.CodeitUserResponse;
 import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -44,7 +44,7 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public static User of(UserRegisterResponse response) {
+    public static User of(CodeitUserResponse response) {
         return new User(
                 response.getId(),
                 response.getEmail(),

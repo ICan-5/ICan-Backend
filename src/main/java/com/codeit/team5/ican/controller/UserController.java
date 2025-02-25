@@ -2,7 +2,7 @@ package com.codeit.team5.ican.controller;
 
 import com.codeit.team5.ican.config.annotation.LoginUser;
 import com.codeit.team5.ican.controller.dto.user.UserRegisterRequest;
-import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
+import com.codeit.team5.ican.controller.dto.auth.CodeitUserResponse;
 import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
 import com.codeit.team5.ican.controller.dto.user.UserDTO;
 import com.codeit.team5.ican.service.UserService;
@@ -30,11 +30,11 @@ public class UserController {
             @RequestBody UserRegisterRequest request
     ) {
         try {
-            UserRegisterResponse response = restClient.post()
+            CodeitUserResponse response = restClient.post()
                     .uri("/user")
                     .body(request)
                     .retrieve()
-                    .body(UserRegisterResponse.class);
+                    .body(CodeitUserResponse.class);
 
             userService.register(response);
 

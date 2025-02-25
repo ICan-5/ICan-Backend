@@ -1,6 +1,6 @@
 package com.codeit.team5.ican.service;
 
-import com.codeit.team5.ican.controller.dto.user.UserRegisterResponse;
+import com.codeit.team5.ican.controller.dto.auth.CodeitUserResponse;
 import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
 import com.codeit.team5.ican.domain.User;
 import com.codeit.team5.ican.exception.UserNotFoundException;
@@ -22,7 +22,7 @@ public class UserService {
     private final S3Service s3Service;
 
     @Transactional
-    public void register(UserRegisterResponse response) {
+    public void register(CodeitUserResponse response) {
         User user = User.of(response);
         userRepository.save(user);
     }
