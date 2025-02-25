@@ -8,9 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CalendarGoalDTO {
     private Long goalId;
+    private String title;
     private String color;
 
     public static CalendarGoalDTO from(Goal goal) {
-        return new CalendarGoalDTO(goal.getGoalId(), goal.getColor());
+        return new CalendarGoalDTO(goal.getGoalId(), goal.getTitle(), goal.getColor());
     }
 }

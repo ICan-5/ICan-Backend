@@ -13,6 +13,8 @@ import java.time.ZonedDateTime;
 public class GoalDTO {
     private Long goalId;
 
+    private String title;
+
     private String color;
 
     private ZonedDateTime createdAt;
@@ -20,6 +22,7 @@ public class GoalDTO {
     public static GoalDTO from(Goal goal) {
         return GoalDTO.builder()
                 .goalId(goal.getGoalId())
+                .title(goal.getTitle())
                 .color(goal.getColor())
                 .createdAt(goal.getCreatedAt())
                 .build();

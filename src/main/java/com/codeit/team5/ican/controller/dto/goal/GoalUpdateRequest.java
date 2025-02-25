@@ -5,4 +5,5 @@ import lombok.Getter;
 @Getter
 public class GoalUpdateRequest {
     private String color;
+    private String title;
 }
