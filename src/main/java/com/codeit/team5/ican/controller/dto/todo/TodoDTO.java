@@ -24,7 +24,7 @@ public class TodoDTO {
         return TodoDTO.builder()
                 .noteId(todo.getNoteId())
                 .todoId(todo.getTodoId())
-                .goalId(todo.getGoal().getGoalId())
+                .goalId(todo.getGoal() == null ? null : todo.getGoal().getGoalId())
                 .date(todo.getDate())
                 .createdAt(todo.getCreatedAt())
                 .done(todo.getDone())

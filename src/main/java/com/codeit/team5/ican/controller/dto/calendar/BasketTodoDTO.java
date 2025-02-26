@@ -20,7 +20,7 @@ public class BasketTodoDTO {
         return BasketTodoDTO.builder()
                 .id(basketTodo.getId())
                 .title(basketTodo.getTitle())
-                .goalId(basketTodo.getGoal() == null? null : basketTodo.getGoal().getGoalId())
+                .goalId(basketTodo.getGoal() == null ? null : basketTodo.getGoal().getGoalId())
                 .createdAt(basketTodo.getCreatedAt())
                 .build();
     }
