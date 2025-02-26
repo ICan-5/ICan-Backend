@@ -6,6 +6,7 @@ import com.codeit.team5.ican.controller.dto.auth.CodeitUserResponse;
 import com.codeit.team5.ican.controller.dto.user.UserUpdateRequest;
 import com.codeit.team5.ican.controller.dto.user.UserDTO;
 import com.codeit.team5.ican.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(
-            @RequestBody UserRegisterRequest request
+            @RequestBody @Valid UserRegisterRequest request
     ) {
         try {
             CodeitUserResponse response = restClient.post()
@@ -48,7 +49,9 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDTO> getUser(@LoginUser Long userId) {
+    public ResponseEntity<UserDTO> getUser(
+            @LoginUser Long userId
+    ) {
         return ResponseEntity.ok(UserDTO.from(userService.findByUserId(userId)));
     }
 

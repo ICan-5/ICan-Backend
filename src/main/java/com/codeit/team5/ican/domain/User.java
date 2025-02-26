@@ -18,10 +18,13 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private Long codeitId;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String name;
 
     private ZonedDateTime createdAt;
