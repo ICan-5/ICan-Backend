@@ -70,6 +70,10 @@ public class Todo {
         this.goal = goal;
     }
 
+    public void removeGoal() {
+        this.goal = null;
+    }
+
     public void deleteNote() {
         this.noteId = null;
     }
