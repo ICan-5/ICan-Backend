@@ -43,7 +43,7 @@ public class GoalService {
             goalRepository.flush(); //for checking DataIntegrityViolationException
             return saved;
         } catch (DataIntegrityViolationException e) {
-            throw new GoalAlreadyExistsException("골 아이디 " + request.getGoalId() + "가 이미 존재합니다");
+            throw new RuntimeException(e.getMessage());
         }
 
     }

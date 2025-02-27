@@ -28,7 +28,7 @@ public class Todo {
     private Long todoId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id", nullable = false)
+    @JoinColumn(name = "goal_id")
     private Goal goal;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,10 +37,13 @@ public class Todo {
 
     private Long noteId;
 
+    @Column(nullable = false)
     private LocalDate date;
 
+    @Column(nullable = false)
     private ZonedDateTime createdAt;
 
+    @Column(nullable = false)
     private Boolean done;
 
     public static Todo create(User user, Goal goal, TodoCreateRequest request) {

@@ -28,10 +28,13 @@ public class Goal {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String color;
 
+    @Column(nullable = false)
     private ZonedDateTime createdAt;
 
     public static Goal create(User user, GoalCreateRequest request) {

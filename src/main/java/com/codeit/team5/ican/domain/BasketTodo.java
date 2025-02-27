@@ -31,6 +31,7 @@ public class BasketTodo {
     @JoinColumn(name = "goal_id")
     private Goal goal;
 
+    @Column(nullable = false)
     private ZonedDateTime createdAt;
 
     public static BasketTodo create(User user, Goal goal, BasketTodoCreateRequest request) {

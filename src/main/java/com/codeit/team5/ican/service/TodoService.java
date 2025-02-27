@@ -31,16 +31,19 @@ public class TodoService {
                 new UserNotFoundException("유저 아이디 " + userId + "를 찾을 수 없습니다.")
         );
 
-        Goal goal = goalRepository.findByUserIdAndGoalId(userId, request.getGoalId()).orElseThrow(() ->
-            new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.")
-        );
+        Goal goal = null;
+        if(request.getGoalId() != null) {
+            goal = goalRepository.findByUserIdAndGoalId(userId, request.getGoalId()).orElseThrow(() ->
+                    new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.")
+            );
+        }
 
         try {
             Todo saved = todoRepository.save(Todo.create(user, goal, request));
             todoRepository.flush();
             return saved;
         } catch (DataIntegrityViolationException e) {
-            throw new TodoAlreadyExistsException("할 일 아이디 " + request.getTodoId() + "가 이미 존재합니다");
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -51,14 +54,15 @@ public class TodoService {
         //Goal을 변경하지 않는 경우
         if(request.getGoalId() == null) {
             todo.update(request);
-            return todoRepository.save(todo);
+            return todo;
         }
 
         Goal goal = goalRepository.findByUserIdAndGoalId(userId, request.getGoalId()).orElseThrow(() ->
                 new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.")
         );
         todo.update(goal, request);
-        return todoRepository.save(todo);
+
+        return todo;
     }
 
     @Transactional

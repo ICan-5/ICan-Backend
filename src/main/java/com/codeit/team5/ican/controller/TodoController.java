@@ -5,6 +5,7 @@ import com.codeit.team5.ican.controller.dto.todo.TodoCreateRequest;
 import com.codeit.team5.ican.controller.dto.todo.TodoDTO;
 import com.codeit.team5.ican.controller.dto.todo.TodoUpdateRequest;
 import com.codeit.team5.ican.service.TodoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class TodoController {
     @PostMapping
     public ResponseEntity<TodoDTO> createTodo(
             @LoginUser Long userId,
-            @RequestBody TodoCreateRequest todoCreateRequest
+            @RequestBody @Valid TodoCreateRequest todoCreateRequest
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 TodoDTO.from(todoService.createTodo(userId, todoCreateRequest))
@@ -45,6 +46,16 @@ public class TodoController {
     ) {
         todoService.deleteTodo(userId, todoId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{todoId}")
+    public ResponseEntity<TodoDTO> getTodo(
+            @LoginUser Long userId,
+            @PathVariable Long todoId
+    ) {
+        return ResponseEntity.ok(
+                TodoDTO.from(todoService.findTodo(userId, todoId))
+        );
     }
 
 }

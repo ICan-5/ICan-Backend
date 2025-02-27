@@ -5,6 +5,7 @@ import com.codeit.team5.ican.controller.dto.goal.GoalCreateRequest;
 import com.codeit.team5.ican.controller.dto.goal.GoalDTO;
 import com.codeit.team5.ican.controller.dto.goal.GoalUpdateRequest;
 import com.codeit.team5.ican.service.GoalService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,9 @@ GoalController {
     private final GoalService goalService;
 
     @GetMapping
-    public ResponseEntity<List<GoalDTO>> getAllGoals(@LoginUser Long userId) {
+    public ResponseEntity<List<GoalDTO>> getAllGoals(
+            @LoginUser Long userId
+    ) {
         return ResponseEntity.ok(
                 goalService.findAllGoals(userId)
                         .stream()
@@ -35,7 +38,7 @@ GoalController {
     @PostMapping
     public ResponseEntity<GoalDTO> createGoal(
             @LoginUser Long userId,
-            @RequestBody GoalCreateRequest goalCreateRequest
+            @RequestBody @Valid GoalCreateRequest goalCreateRequest
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 GoalDTO.from(goalService.createGoal(userId, goalCreateRequest))
@@ -53,7 +56,7 @@ GoalController {
     }
 
     @PatchMapping("{goalId}")
-    public ResponseEntity<GoalDTO> updateGoal(
+    public ResponseEntity<GoalDTO> deleteGoal(
             @LoginUser Long userId,
             @PathVariable Long goalId,
             @RequestBody GoalUpdateRequest updateGoalRequest
@@ -64,7 +67,7 @@ GoalController {
     }
 
     @DeleteMapping("{goalId}")
-    public ResponseEntity<Void> updateGoal(
+    public ResponseEntity<Void> deleteGoal(
             @LoginUser Long userId,
             @PathVariable Long goalId
     ) {

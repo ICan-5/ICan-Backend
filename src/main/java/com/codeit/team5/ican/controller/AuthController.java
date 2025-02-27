@@ -4,6 +4,7 @@ import com.codeit.team5.ican.config.annotation.RefreshToken;
 import com.codeit.team5.ican.controller.dto.auth.*;
 import com.codeit.team5.ican.controller.dto.auth.CodeitUserResponse;
 import com.codeit.team5.ican.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody LoginRequest request
+            @RequestBody @Valid LoginRequest request
     ) {
         try {
             CodeitLoginResponse response = restClient.post()

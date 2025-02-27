@@ -12,6 +12,7 @@ public class CalendarGoalDTO {
     private String color;
 
     public static CalendarGoalDTO from(Goal goal) {
+        if(goal == null) return null;
         return new CalendarGoalDTO(goal.getGoalId(), goal.getTitle(), goal.getColor());
     }
 }
