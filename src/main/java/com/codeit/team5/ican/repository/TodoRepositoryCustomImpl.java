@@ -71,7 +71,7 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom {
         return jpaQueryFactory
                 .select(todo)
                 .from(todo)
-                .join(todo.goal, goal).fetchJoin() // N + 1 방지
+                .leftJoin(todo.goal, goal).fetchJoin() // N + 1 방지
                 .where(
                         todo.user.id.eq(userId),
                         todo.date.between(startDate, endDate)
@@ -91,7 +91,7 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom {
         return jpaQueryFactory
                 .select(todo)
                 .from(todo)
-                .join(todo.goal, goal).fetchJoin() // N + 1 방지
+                .leftJoin(todo.goal, goal).fetchJoin() // N + 1 방지
                 .where(
                         todo.user.id.eq(userId),
                         todo.date.eq(date)
