@@ -48,4 +48,14 @@ public class TodoController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{todoId}")
+    public ResponseEntity<TodoDTO> getTodo(
+            @LoginUser Long userId,
+            @PathVariable Long todoId
+    ) {
+        return ResponseEntity.ok(
+                TodoDTO.from(todoService.findTodo(userId, todoId))
+        );
+    }
+
 }
