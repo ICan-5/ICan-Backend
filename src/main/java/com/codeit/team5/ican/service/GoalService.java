@@ -4,7 +4,6 @@ import com.codeit.team5.ican.controller.dto.goal.GoalCreateRequest;
 import com.codeit.team5.ican.controller.dto.goal.GoalUpdateRequest;
 import com.codeit.team5.ican.domain.Goal;
 import com.codeit.team5.ican.domain.User;
-import com.codeit.team5.ican.exception.GoalAlreadyExistsException;
 import com.codeit.team5.ican.exception.GoalNotFoundException;
 import com.codeit.team5.ican.exception.UserNotFoundException;
 import com.codeit.team5.ican.repository.GoalRepository;
@@ -48,13 +47,6 @@ public class GoalService {
 
     }
 
-    @Transactional(readOnly = true)
-    public Goal findGoal(Long userId, Long goalId) {
-        return goalRepository.findByUserIdAndGoalId(userId, goalId).orElseThrow(() ->
-                new GoalNotFoundException("골 아이디 " + goalId + "를 찾을 수 없습니다.")
-        );
-    }
-
     @Transactional
     public Goal updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
         Goal goal = findGoal(userId, goalId);
@@ -67,4 +59,17 @@ public class GoalService {
         goalRepository.delete(findGoal(userId, goalId));
     }
 
+    @Transactional(readOnly = true)
+    public Goal findGoalWithTodosAndBasketTodos(Long userId, Long goalId) {
+        return goalRepository.findGoalWithTodosAndBasketTodos(userId, goalId).orElseThrow(() ->
+                new GoalNotFoundException("골 아이디 " + goalId + "를 찾을 수 없습니다.")
+        );
+    }
+
+    @Transactional(readOnly = true)
+    protected Goal findGoal(Long userId, Long goalId) {
+        return goalRepository.findByUserIdAndGoalId(userId, goalId).orElseThrow(() ->
+                new GoalNotFoundException("골 아이디 " + goalId + "를 찾을 수 없습니다.")
+        );
+    }
 }

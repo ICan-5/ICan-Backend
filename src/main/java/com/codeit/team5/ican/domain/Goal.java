@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -37,6 +41,12 @@ public class Goal {
     @Column(nullable = false)
     private ZonedDateTime createdAt;
 
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private final Set<Todo> todos = new HashSet<>();
+
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private final Set<BasketTodo> basketTodos = new HashSet<>();
+
     public static Goal create(User user, GoalCreateRequest request) {
         return Goal.builder()
                 .goalId(request.getGoalId())
@@ -51,5 +61,4 @@ public class Goal {
         this.color = request.getColor() != null ? request.getColor() : color;
         this.title = request.getTitle() != null ? request.getTitle() : title;
     }
-
 }
