@@ -57,11 +57,18 @@ public class TodoService {
             return todo;
         }
 
+        //Goal을 삭제하는 경우 goalId = 0
+        if(request.getGoalId().equals(0L)) {
+            todo.removeGoal();
+            todo.update(request);
+            return todo;
+        }
+
+        //Goal을 변경하는 경우
         Goal goal = goalRepository.findByUserIdAndGoalId(userId, request.getGoalId()).orElseThrow(() ->
                 new GoalNotFoundException("골 아이디 " + request.getGoalId() + "를 찾을 수 없습니다.")
         );
         todo.update(goal, request);
-
         return todo;
     }
 
