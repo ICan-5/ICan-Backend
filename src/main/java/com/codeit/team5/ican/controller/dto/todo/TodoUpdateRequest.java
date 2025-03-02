@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class TodoUpdateRequest {
     private String title;
     private Long goalId;
+    private Long noteId;
     private Boolean done;
     private LocalDate date;
 }

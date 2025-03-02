@@ -63,6 +63,7 @@ public class Todo {
         this.title = request.getTitle() != null ? request.getTitle() : this.title;
         this.done = request.getDone() != null ? request.getDone() : this.done;
         this.date = request.getDate() != null ? request.getDate() : this.date;
+        this.noteId = request.getNoteId() != null ? request.getNoteId() : this.noteId;
     }
 
     public void update(Goal goal, TodoUpdateRequest request) {
