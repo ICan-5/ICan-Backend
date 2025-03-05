@@ -1,6 +1,7 @@
 package com.codeit.team5.ican.controller;
 
 import com.codeit.team5.ican.config.annotation.LoginUser;
+import com.codeit.team5.ican.controller.dto.calendar.CalendarTodoDTO;
 import com.codeit.team5.ican.controller.dto.todo.TodoCreateRequest;
 import com.codeit.team5.ican.controller.dto.todo.TodoDTO;
 import com.codeit.team5.ican.controller.dto.todo.TodoUpdateRequest;
@@ -19,12 +20,12 @@ public class TodoController {
     private final TodoService todoService;
 
     @PostMapping
-    public ResponseEntity<TodoDTO> createTodo(
+    public ResponseEntity<CalendarTodoDTO> createTodo(
             @LoginUser Long userId,
             @RequestBody @Valid TodoCreateRequest todoCreateRequest
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                TodoDTO.from(todoService.createTodo(userId, todoCreateRequest))
+                CalendarTodoDTO.from(todoService.createTodo(userId, todoCreateRequest))
         );
     }
 
