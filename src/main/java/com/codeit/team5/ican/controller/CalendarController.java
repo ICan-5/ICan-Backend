@@ -5,6 +5,7 @@ import com.codeit.team5.ican.controller.dto.calendar.BasketTodoCreateRequest;
 import com.codeit.team5.ican.controller.dto.calendar.BasketTodoDTO;
 import com.codeit.team5.ican.controller.dto.calendar.CalendarTodoDTO;
 import com.codeit.team5.ican.service.CalendarService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class CalendarController {
     @PostMapping("/todo-basket")
     public ResponseEntity<BasketTodoDTO> createBasketTodo(
             @LoginUser Long userId,
-            @RequestBody BasketTodoCreateRequest request
+            @RequestBody @Valid BasketTodoCreateRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 BasketTodoDTO.from(calendarService.createBasketTodo(userId, request))
@@ -79,6 +80,14 @@ public class CalendarController {
             @PathVariable Long basketTodoId
     ) {
         calendarService.deleteBasketTodo(userId, basketTodoId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/todo-basket")
+    public ResponseEntity<Void> deleteAllBasketTodos(
+            @LoginUser Long userId
+    ) {
+        calendarService.deleteAllBasketTodos(userId);
         return ResponseEntity.noContent().build();
     }
 

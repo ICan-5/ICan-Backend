@@ -66,5 +66,10 @@ public class CalendarService {
         );
         basketTodoRepository.delete(basketTodo);
     }
+
+    @Transactional
+    public void deleteAllBasketTodos(Long userId) {
+        basketTodoRepository.deleteAllByUserId(userId);
+    }
 }
 

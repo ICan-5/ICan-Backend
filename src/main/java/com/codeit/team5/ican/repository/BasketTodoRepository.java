@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface BasketTodoRepository extends JpaRepository<BasketTodo, Long>, BasketTodoRepositoryCustom {
     Optional<BasketTodo> findByIdAndUserId(long id, long userId);
+    void deleteAllByUserId(long userId);
 }
