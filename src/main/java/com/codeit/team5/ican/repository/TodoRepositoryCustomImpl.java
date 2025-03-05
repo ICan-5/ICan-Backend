@@ -44,8 +44,9 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom {
     public TodoStats getTodoStats(long userId, LocalDate date) {
         QTodo todo = QTodo.todo;
 
-        TodoStats todoStats =  jpaQueryFactory
+        return jpaQueryFactory
                 .select(Projections.constructor(TodoStats.class,
+                        todo.date,
                         todo.count(), //total
                         todo.done.when(true).then(1).otherwise(0).sum().coalesce(0) //completed
                 ))
@@ -55,9 +56,6 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom {
                         todo.date.eq(date)
                 )
                 .fetchOne();
-
-        todoStats.setDate(date);
-        return todoStats;
     }
 
     @Override
