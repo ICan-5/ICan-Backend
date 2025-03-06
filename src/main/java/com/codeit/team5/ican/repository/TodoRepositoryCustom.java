@@ -7,6 +7,7 @@ import com.codeit.team5.ican.domain.Todo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface TodoRepositoryCustom {
     List<Jandi> getJandi(long userId, int year);
@@ -16,4 +17,6 @@ public interface TodoRepositoryCustom {
     List<Todo> getMonthlyTodos(long userId, int year, int month);
 
     List<Todo> getDailyTodos(long userId, LocalDate date);
+
+    Optional<Todo> findByUserIdAndTodoIdWithGoal(long userId, long todoId);
 }

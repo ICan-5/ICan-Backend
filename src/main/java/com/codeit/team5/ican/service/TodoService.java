@@ -84,5 +84,12 @@ public class TodoService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public Todo findTodoWithGoal(Long userId, Long todoId) {
+        return todoRepository.findByUserIdAndTodoIdWithGoal(userId, todoId).orElseThrow(() ->
+                new TodoNotFoundException("할 일 아이디 " + todoId + "를 찾을 수 없습니다.")
+        );
+    }
+
 
 }

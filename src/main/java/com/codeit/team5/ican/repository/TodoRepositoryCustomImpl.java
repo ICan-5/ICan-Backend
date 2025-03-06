@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -98,5 +99,22 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom {
                         todo.createdAt.asc()
                 )
                 .fetch();
+    }
+
+    @Override
+    public Optional<Todo> findByUserIdAndTodoIdWithGoal(long userId, long todoId) {
+        QTodo todo = QTodo.todo;
+        QGoal goal = QGoal.goal;
+
+        return Optional.ofNullable(
+                jpaQueryFactory
+                .selectFrom(todo)
+                .leftJoin(todo.goal, goal).fetchJoin()
+                .where(
+                        todo.todoId.eq(todoId),
+                        todo.user.id.eq(userId)
+                )
+                .fetchOne()
+        );
     }
 }
