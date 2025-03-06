@@ -50,12 +50,12 @@ public class TodoController {
     }
 
     @GetMapping("/{todoId}")
-    public ResponseEntity<TodoDTO> getTodo(
+    public ResponseEntity<CalendarTodoDTO> getTodo(
             @LoginUser Long userId,
             @PathVariable Long todoId
     ) {
         return ResponseEntity.ok(
-                TodoDTO.from(todoService.findTodo(userId, todoId))
+                CalendarTodoDTO.from(todoService.findTodoWithGoal(userId, todoId))
         );
     }
 
