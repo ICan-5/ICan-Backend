@@ -3,7 +3,7 @@ name: Deploy To EC2
 on:
   push:
     branches:
-      - fix/find-todo-include-goalDTO
+      - fix/login-response-include-profile
 
 jobs:
   deploy:

@@ -3,6 +3,7 @@ package com.codeit.team5.ican.controller;
 import com.codeit.team5.ican.config.annotation.RefreshToken;
 import com.codeit.team5.ican.controller.dto.auth.*;
 import com.codeit.team5.ican.controller.dto.auth.CodeitUserResponse;
+import com.codeit.team5.ican.domain.User;
 import com.codeit.team5.ican.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,9 @@ public class AuthController {
                     .retrieve()
                     .body(CodeitLoginResponse.class);
 
-            authService.login(response);
+            User user = authService.login(response);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(LoginResponse.of(response, user));
         } catch (HttpClientErrorException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
         } catch (HttpServerErrorException e) {
