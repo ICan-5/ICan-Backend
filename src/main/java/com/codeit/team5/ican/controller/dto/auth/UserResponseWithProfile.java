@@ -16,13 +16,13 @@ public class UserResponseWithProfile {
     private ZonedDateTime updatedAt;
     private String profile;
 
-    public static UserResponseWithProfile of(CodeitLoginResponse response, User user) {
+    public static UserResponseWithProfile of(User user) {
         return UserResponseWithProfile.builder()
-                .id(response.getUser().getId())
-                .email(response.getUser().getEmail())
-                .name(response.getUser().getName())
-                .createdAt(response.getUser().getCreatedAt())
-                .updatedAt(response.getUser().getUpdatedAt())
+                .id(user.getCodeitId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .profile(user.getProfile())
                 .build();
     }

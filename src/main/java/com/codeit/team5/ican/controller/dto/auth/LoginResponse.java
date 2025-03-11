@@ -13,7 +13,7 @@ public class LoginResponse {
 
     public static LoginResponse of(CodeitLoginResponse response, User user) {
         return LoginResponse.builder()
-                .user(UserResponseWithProfile.of(response, user))
+                .user(UserResponseWithProfile.of(user))
                 .refreshToken(response.getRefreshToken())
                 .accessToken(response.getAccessToken())
                 .build();
