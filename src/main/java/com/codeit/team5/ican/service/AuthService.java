@@ -19,21 +19,22 @@ public class AuthService {
     private final RedisTemplate<String, String> redisTemplate;
     private final UserRepository userRepository;
 
-    private void login(Long codeitUserId, String accessToken) {
+    private User login(Long codeitUserId, String accessToken) {
         User findUser = userRepository.findByCodeitId(codeitUserId);
         if(findUser == null) {
             throw new RuntimeException("백엔드 API로 회원가입을 해야합니다.");
         }
 
         redisTemplate.opsForValue().set(accessToken, String.valueOf(findUser.getId()), Duration.ofHours(1));
+        return findUser;
     }
 
-    public void login(CodeitLoginResponse loginResponse) {
-        login(loginResponse.getUser().getId(), loginResponse.getAccessToken());
+    public User login(CodeitLoginResponse loginResponse) {
+        return login(loginResponse.getUser().getId(), loginResponse.getAccessToken());
     }
 
-    public void login(CodeitTokenRefreshResponse refreshResponse, CodeitUserResponse userResponse) {
-        login(userResponse.getId(), refreshResponse.getAccessToken());
+    public User login(CodeitTokenRefreshResponse refreshResponse, CodeitUserResponse userResponse) {
+        return login(userResponse.getId(), refreshResponse.getAccessToken());
     }
 
     public Long getUserId(String accessToken) {
